@@ -1,0 +1,58 @@
+def TAG_TEST
+def EMAIL_SUCCESS
+def EMAIL_FAILURE
+
+def sendEmail(resultTest) {
+        if(resultTest == "SUCCESS"){
+                      emailext to: "${EMAIL_SUCCESS}",
+                      subject : "SUCCESSFUL EXECUTION OF ${NAME_TEST}",
+                      attachLog: true,
+                      body : "Job success - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\n"
+        } else {
+                      emailext to: "${EMAIL_FAILURE}",
+                      subject : "FAILED EXECUTION OF ${NAME_TEST}",
+                      attachLog: true,
+                      body : "Job failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\n"
+        }
+
+        //emailext body: '${body}', subject: '${subject}', to: '${emailext to}'
+}
+
+NAME_TEST = "INVESTIGATION PROJECT"
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Get Source') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '284774ba-98f3-4b7e-ba8f-5cf0a6f8e7e9', url: 'https://github.com/WoloxAmquinte/simpletests.git']]])
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                catchError{
+                    echo "RUNNING CLEAN"
+                    sh "chmod +x gradlew"
+                    sh "./gradlew clean"
+            		echo "RUNNING TEST"
+                    sh './gradlew test -Dcucumber.options="-tags @${TAG_TEST}"'
+                    script {
+                            currentBuild.result = 'SUCCESS'
+                    }
+                    echo "The test result is: '${currentBuild.result}'"
+                }
+            }
+        }
+        stage('Notify') {
+            steps {
+                  catchError{
+                      script{
+                        sendEmail(currentBuild.result)
+                      }
+                }
+            }
+        }
+    }
+}
