@@ -37,7 +37,9 @@ pipeline {
                     sh "chmod +x gradlew"
                     sh "./gradlew clean"
             		echo "RUNNING TEST"
-                    sh './gradlew test -Dcucumber.options="-tags @${TAG_TEST}"'
+                    //sh './gradlew test -Dcucumber.options="-tags @${TAG_TEST}"'
+                    sh './gradlew test --info -DregressionType="@${TAG_TEST}"'
+
                     script {
                             currentBuild.result = 'SUCCESS'
                     }
