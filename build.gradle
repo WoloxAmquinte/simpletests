@@ -28,7 +28,6 @@ test {
 test {
 
     String regressionType  = System.properties['regressionType']
-    println "Tipo de regresion recibido por parametro: " + regressionType
     systemProperty "regressionType", regressionType
     switch (regressionType) {
         case "@Jenkins":
@@ -41,6 +40,14 @@ test {
         case "@Smoke":
             useJUnit()
             include('**/SmokeTest*')
+            maxParallelForks = 1
+            reports.junitXml.setEnabled(false)
+            reports.html.setEnabled(false)
+            break
+        case "@All":
+            useJUnit()
+            include('**/SmokeTest*')
+            include('**/JenkinsTest*')
             maxParallelForks = 1
             reports.junitXml.setEnabled(false)
             reports.html.setEnabled(false)

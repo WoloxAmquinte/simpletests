@@ -1,6 +1,5 @@
 package pages;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
