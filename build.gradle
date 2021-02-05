@@ -21,10 +21,6 @@ dependencies {
     testCompile group: 'io.cucumber', name: 'cucumber-junit', version: '6.9.0'
 }
 
-
-test {
-    systemProperty "cucumber.options", System.getProperty("cucumber.options")
-}
 test {
 
     String regressionType  = System.properties['regressionType']

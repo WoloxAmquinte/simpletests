@@ -36,6 +36,18 @@ pipeline {
         stage ('Generate Evidence'){
               steps{
                 step([$class: 'CucumberReportPublisher', jsonReportDirectory: 'target/', fileIncludePattern: '*.json'])
+                step([$class: 'CucumberReportPublisher',
+                              jenkinsBasePath: '',
+                              fileIncludePattern: '',
+                              fileExcludePattern: '',
+                              jsonReportDirectory: 'target',
+                              ignoreFailedTests: true,
+                              missingFails: false,
+                              pendingFails: false,
+                              skippedFails: false,
+                              undefinedFails: false,
+                              parallelTesting: true])
+
                 script{
                        print "The results of the execution can be found at the following URL: ";
                        intTestURL = env.BUILD_URL + "cucumber-html-reports/overview-features.html";
