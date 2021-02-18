@@ -54,6 +54,20 @@ pipeline {
                 }
             }
         }
+
+        stage('reports') {
+            steps {
+                script {
+                        allure([
+                                includeProperties: false,
+                                jdk: '',
+                                properties: [],
+                                reportBuildPolicy: 'ALWAYS',
+                                results: [[path: 'build/allure-results']]
+                        ])
+                }
+            }
+        }
     }
 }
 def sendEmail(resultTest) {
@@ -308,6 +322,53 @@ def sendEmail(resultTest) {
                                                   </tr>
                                               </table>
                                               <!-- Cucumber -->
+
+                                              <!-- Allure -->
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td style="padding-bottom: 10px;">
+                                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" dir="rtl" style="direction: rtl;">
+                                                                <tr>
+                                                                    <th class="column-dir" dir="ltr" width="245" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; direction:ltr;background:#f6efe7;border-radius:0px 10px 10px 0px">
+                                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                            <tr>
+                                                                                <td class="fluid-img mbr" style="font-size:0pt; line-height:0pt; text-align:center;"><img src="https://avatars.githubusercontent.com/u/5879127?s=200&v=4" border="0" alt="" /></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </th>
+                                                                    <th class="column-dir" dir="ltr" style="font-size:0pt; line-height:0pt; padding:0; margin:0; font-weight:normal; direction:ltr;">
+                                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                            <tr>
+                                                                                <td class="p30-15 brl" style="padding: 20px; border-radius:10px 0px 0px 10px;" bgcolor="#ffffff" height="100">
+                                                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                                        <tr>
+                                                                                            <td class="h3 pb20" style="color:#445942; font-family:'Poppins', Arial,sans-serif; font-size:14px; line-height:24px; text-align:center; padding-bottom:20px;">Review the allure result. </td>
+                                                                                        </tr>
+
+                                                                                        <!-- Button -->
+                                                                                        <tr>
+                                                                                            <td align="center">
+                                                                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                                                                    <tr>
+                                                                                                        <td class="text-button" style="background:#0A0B01; color:#ffffff; font-family:'Poppins', Arial,sans-serif; font-size:14px; line-height:18px; padding:12px 30px; text-align:center; border-radius:22px;">
+                                                                                                            <a href="${env.BUILD_URL}/allure" target="_blank" class="link-white" style="color:#ffffff; text-decoration:none;">
+                                                                                                                <span class="link-white" style="color:#FFF; text-decoration:none;"><b>Go to Jenkins</b></span></a></td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <!-- END Button -->
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </th>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- Allure -->
 
                                               <!-- Footer -->
                                               <center>
